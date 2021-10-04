@@ -1,14 +1,19 @@
 <template>
   <div>
-    {{ JSON.stringify(questions, null, 2) }}
+    <!-- Feeds Question with each question value sequentially -->
     <div :key="question" v-if="this.questions[questionNum]">
       <Question @answer-question="onAnswer" :question='this.questions[questionNum]'/>
     </div>
 
-    <div v-if="questionNum >= this.questions.length">
-      <h2>Review</h2>
-      <div :key="i" v-for="i in this.answers">
-        <b>{{i.question}}</b> <i>{{i.answer}}</i>
+    <div class="summary leftAlign" v-if="questionNum >= this.questions.length">
+      <h2>Summary</h2>
+      <div class="container" :key="i" v-for="i in this.answers">
+        <div style="flex: 2; text-align: right;">
+          <b>{{i.question}}</b>
+        </div>
+        <div style="flex: 1; text-align: left; padding-left: 12px;">
+         <i>{{i.answer}}</i>
+        </div>
       </div>
     </div>
 
@@ -52,3 +57,28 @@ export default {
   }
 };
 </script>
+
+<style>
+.summary{
+  display: block;
+  max-width: 600px;
+  margin: auto;
+
+  text-align: center;
+
+
+  background-color: #fcfcfc;
+  border-radius: 15px;
+
+  box-shadow: 10px 12px 132px 12px rgba(174,174,174,0.63);
+-webkit-box-shadow: 10px 12px 132px 12px rgba(174,174,174,0.63);
+-moz-box-shadow: 10px 12px 132px 12px rgba(174,174,174,0.63);
+}
+
+.summary > .container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+}
+</style>
