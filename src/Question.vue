@@ -1,13 +1,15 @@
 <template>
   <div class="question">
-    <h2>{{question.text}}</h2>
-    <div class="container">
-      <div class = "leftAlign">
-        <div :key="answer" v-for= "answer in question.answers">
-          <input type="radio" :name="question.text" :value="answer">{{answer}}
+    <div style="display: block; width: 85%">
+      <h2>{{question.text}}</h2>
+      <div class="container">
+        <div class = "leftAlign">
+          <div :key="answer" v-for= "answer in question.answers">
+            <input v-model="answerSelected" type="radio" :name="question.text" :value="answer">{{answer}}
+          </div>
         </div>
+        <button v-if="answerSelected!==null" @click="onClick()">Advance</button>
       </div>
-      <button @click="onClick()">Advance</button>
     </div>
   </div>
 </template>
@@ -18,16 +20,18 @@ export default {
   props:{
     question: Object,
   },
+  
+  data() {
+    return{
+      answerSelected: null,
+    }
+  },
 
   methods:{
     onClick(){
-      let answerSelected = document.querySelector('input[name="'+ this.question.text+ '"]:checked');
-      if(!answerSelected){
-        alert('Please Select an Answer');
-      }else{
-        //passes the answer up the path to Quiz
-        this.$emit('answer-question', answerSelected.value)
-      }
+      //passes the answer up the path to Quiz
+      this.$emit('answer-question', this.answerSelected)
+      this.answerSelected = null;
     }
   }
 }
@@ -45,11 +49,14 @@ body{
 }
 
 div .question{
-  display: block;
+  display: flex;
   max-width: 600px;
+  min-height: 200px;
   margin: auto;
 
   text-align: center;
+  justify-content: center;
+  align-content: center;
 
 
   background-color: #fcfcfc;

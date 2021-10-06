@@ -1,18 +1,18 @@
 <template>
   <div>
     <!-- Feeds Question with each question value sequentially -->
-    <div :key="question" v-if="this.questions[questionNum]">
+    <div :key="question" v-if="this.questions[this.questionNum]">
       <Question @answer-question="onAnswer" :question='this.questions[questionNum]'/>
     </div>
 
     <div class="summary leftAlign" v-if="questionNum >= this.questions.length">
       <h2>Summary</h2>
-      <div class="container" :key="i" v-for="i in this.answers">
+      <div class="container" v-for="(a, index) in this.answers" :key="a">
         <div style="flex: 2; text-align: right;">
-          <b>{{i.question}}</b>
+          <b>{{questions[index].text}}</b>
         </div>
         <div style="flex: 1; text-align: left; padding-left: 12px;">
-         <i>{{i.answer}}</i>
+         <i>{{a}}</i>
         </div>
       </div>
     </div>
@@ -42,17 +42,17 @@ export default {
      * to move the quiz along
      */
     onAnswer(answer){
-      this.answers[this.questions[this.questionNum].text] = {
-          question: this.questions[this.questionNum].text,
-          answer: answer,
-        };
-      this.questionNum++;
+      this.answers.push(answer)
     }
   },
   data() {
     return{
-      answers:{},
-      questionNum: 0,
+      answers:[],
+    }
+  },
+  computed:{
+    questionNum: function(){
+      return this.answers.length;
     }
   }
 };
